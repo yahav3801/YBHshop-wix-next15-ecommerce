@@ -4,7 +4,7 @@ interface BadgeProps {
   children: React.ReactNode;
   className?: string;
 }
-const badge = ({ children, className }: BadgeProps) => {
+const Badge = ({ children, className }: BadgeProps) => {
   return (
     <span
       className={cn(
@@ -17,4 +17,4 @@ const badge = ({ children, className }: BadgeProps) => {
   );
 };
 
-export default badge;
+export default Badge;

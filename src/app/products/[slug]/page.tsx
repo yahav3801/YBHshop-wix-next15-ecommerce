@@ -4,14 +4,13 @@ import React from "react";
 import ProductDetails from "./ProductDetails";
 
 interface PageProps {
-  params: Promise<{
+  params: {
     slug: string;
-  }>;
+  };
 }
 
 const page = async ({ params }: PageProps) => {
-  const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const product = await getProductBySlug((await params).slug);
   if (!product?._id) notFound();
 
   return (
