@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import ProductOptions from "./ProductOptions";
 import { checkInStock, findVariant } from "@/lib/utils";
 import ProductPrice from "./ProductPrice";
+import ProductMedia from "./ProductMedia";
 
 interface ProductDetailsProps {
   product: products.Product;
@@ -27,15 +28,7 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
   const inStock = checkInStock(product, selectedOptions);
   return (
     <div className="flex flex-col gap-10 md:flex-row lg:gap-20">
-      <div className="w-40">
-        <WixImage
-          mediaIdentifier={product.media?.mainMedia?.image?.url}
-          alt={product.media?.mainMedia?.image?.altText}
-          width={1000}
-          height={1000}
-          className="sticky top-0"
-        />
-      </div>
+      <ProductMedia media={product.media?.items}></ProductMedia>
       <div className="basis-3/5 space-y-5">
         <div className="space-y-2.5">
           <h1 className="text-3xl font-bold lg:text-4xl">{product.name}</h1>

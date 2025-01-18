@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+
 import { media as wixMedia } from "@wix/sdk";
 import { ImgHTMLAttributes } from "react";
 
