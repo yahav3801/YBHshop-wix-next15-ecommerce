@@ -15,6 +15,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import AddToCartButton from "@/components/AddToCartButton";
 
 interface ProductDetailsProps {
   product: products.Product;
@@ -80,10 +81,7 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
           setSelectedOptions={setSelectedOptions}
           product={product}
         ></ProductOptions>
-        <div>Selected Options: {JSON.stringify(selectedOptions)}</div>
-        <div>
-          Selected variables: {JSON.stringify(selectedVariables?.choices)}
-        </div>
+
         <div className="space-y-1.5">
           <Label htmlFor="quantity">Quantity</Label>
           <div className="flex items-center gap-2.5">
@@ -104,11 +102,20 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
               )}
           </div>
         </div>
+        {inStock ? (
+          <AddToCartButton
+            product={product}
+            selectedOptions={selectedOptions}
+            quantity={quantity}
+          />
+        ) : (
+          "Out of stock"
+        )}
         {!!product.additionalInfoSections?.length && (
           <div className="space-y-1.5 text-sm text-muted-foreground">
             <span className="flex items-center gap-2">
               <InfoIcon className="size-5" />
-              <span>Additional Information about this product</span>
+              <span>Additional S about this product</span>
             </span>
             <Accordion type="multiple">
               {product.additionalInfoSections?.map((section) => (

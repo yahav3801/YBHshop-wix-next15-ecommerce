@@ -3,15 +3,16 @@ import { notFound } from "next/navigation";
 import React from "react";
 import ProductDetails from "./ProductDetails";
 import { Metadata } from "next/types";
-import { delay } from "@/lib/utils";
+
 interface PageProps {
   params: {
     slug: string;
   };
 }
 export async function generateMetadata({
-  params: { slug },
+  params,
 }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
@@ -33,8 +34,9 @@ export async function generateMetadata({
     },
   };
 }
-export default async function page({ params: { slug } }: PageProps) {
-  await delay(2000);
+export default async function page({ params }: PageProps) {
+  const { slug } = await params;
+
   const product = await getProductBySlug(slug);
   if (!product?._id) notFound();
 

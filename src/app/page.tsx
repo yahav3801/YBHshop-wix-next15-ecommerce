@@ -1,7 +1,5 @@
 import banner from "@/assets/banner.jpg";
 import { Button } from "@/components/ui/button";
-import { delay } from "@/lib/utils";
-import { getWixClient } from "@/lib/wix-client.base";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -46,7 +44,6 @@ export default function Home() {
 }
 
 async function FeaturedProducts() {
-  await delay(500);
   const collection = await getCollectionBySlug("featured-products");
   if (!collection?._id) {
     return null;

@@ -1,7 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { products } from "@wix/stores";
-import { Value } from "@radix-ui/react-select";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
