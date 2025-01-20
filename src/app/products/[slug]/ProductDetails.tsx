@@ -104,6 +104,8 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
         </div>
         {inStock ? (
           <AddToCartButton
+            className="w-full"
+            disabled={availableQuantityExceeded || quantity < 1}
             product={product}
             selectedOptions={selectedOptions}
             quantity={quantity}
@@ -115,7 +117,7 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
           <div className="space-y-1.5 text-sm text-muted-foreground">
             <span className="flex items-center gap-2">
               <InfoIcon className="size-5" />
-              <span>Additional S about this product</span>
+              <span>Additional Info about this product</span>
             </span>
             <Accordion type="multiple">
               {product.additionalInfoSections?.map((section) => (
