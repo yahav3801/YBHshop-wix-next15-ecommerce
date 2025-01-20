@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import React from "react";
 import ProductDetails from "./ProductDetails";
 import { Metadata } from "next/types";
+import { getWixServerClient } from "@/lib/wix-client.server";
 
 interface PageProps {
   params: {
@@ -13,7 +14,7 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const product = await getProductBySlug(await getWixServerClient(), slug);
   if (!product) notFound();
 
   const mainImage = product.media?.mainMedia?.image;
@@ -37,7 +38,7 @@ export async function generateMetadata({
 export default async function page({ params }: PageProps) {
   const { slug } = await params;
 
-  const product = await getProductBySlug(slug);
+  const product = await getProductBySlug(await getWixServerClient(), slug);
   if (!product?._id) notFound();
 
   return (

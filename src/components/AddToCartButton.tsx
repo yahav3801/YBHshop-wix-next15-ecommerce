@@ -2,6 +2,7 @@ import React from "react";
 import { Button, ButtonProps } from "./ui/button";
 import { products } from "@wix/stores";
 import { addToCart } from "@/wix-api/cart";
+import { wixBrowserClient } from "@/lib/wix-client.browser";
 interface AddToCartButtonProps extends ButtonProps {
   product: products.Product;
   selectedOptions: Record<string, string>;
@@ -17,7 +18,9 @@ const AddToCartButton = ({
 }: AddToCartButtonProps) => {
   return (
     <Button
-      onClick={() => addToCart({ product, selectedOptions, quantity })}
+      onClick={() =>
+        addToCart(wixBrowserClient, { product, selectedOptions, quantity })
+      }
       {...props}
     >
       Add to Cart

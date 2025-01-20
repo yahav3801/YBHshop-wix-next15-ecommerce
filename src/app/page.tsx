@@ -8,6 +8,8 @@ import Product from "@/components/Products";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCollectionBySlug } from "@/wix-api/collections";
 import { queryProducts } from "@/wix-api/products";
+import { getWixClient } from "@/lib/wix-client.base";
+import { getWixServerClient } from "@/lib/wix-client.server";
 export default function Home() {
   return (
     <main className="mx-auto max-w-7xl space-y-10 px-5 py-10">
@@ -44,12 +46,13 @@ export default function Home() {
 }
 
 async function FeaturedProducts() {
-  const collection = await getCollectionBySlug("featured-products");
+  const wixClient = await getWixServerClient();
+  const collection = await getCollectionBySlug(wixClient, "featured-products");
   if (!collection?._id) {
     return null;
   }
 
-  const FeaturedProducts = await queryProducts({
+  const FeaturedProducts = await queryProducts(wixClient, {
     collectionIds: collection._id,
   });
 
