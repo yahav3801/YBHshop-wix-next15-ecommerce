@@ -16,6 +16,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import AddToCartButton from "@/components/AddToCartButton";
+import BackInStockNotificationButuon from "@/components/BackInStockNotificationButton";
 
 interface ProductDetailsProps {
   product: products.Product;
@@ -111,7 +112,11 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
             quantity={quantity}
           />
         ) : (
-          "Out of stock"
+          <BackInStockNotificationButuon
+            className="w-full"
+            product={product}
+            selectedOptions={selectedOptions}
+          />
         )}
         {!!product.additionalInfoSections?.length && (
           <div className="space-y-1.5 text-sm text-muted-foreground">
