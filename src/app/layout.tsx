@@ -12,8 +12,8 @@ const lora = Lora({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Flow Shop",
-    absolute: "Flow Shop",
+    template: "%s | YBH Shop",
+    absolute: "YBH Shop",
   },
   description: "A Full-stack e-commerce built with nextjs15",
 };
@@ -27,10 +27,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={lora.className}>
         <ThemeProvider
+          disableTransitionOnChange
           attribute="class"
           defaultTheme="system"
-          enableSystem={true}
-          disableTransitionOnChange
+          enableSystem
         >
           <ReactQueryProvider>
             <Navbar />

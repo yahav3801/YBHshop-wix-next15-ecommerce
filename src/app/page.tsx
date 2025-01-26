@@ -32,7 +32,7 @@ export default function Home() {
           <Image
             priority
             src={banner}
-            alt="flow shop banner"
+            alt="ybh shop banner"
             className="h-full object-cover"
           />
           <div className="animate-gradient absolute inset-0 bg-gradient-to-r from-secondary via-transparent to-transparent" />
