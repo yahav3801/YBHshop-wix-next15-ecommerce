@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { Input } from "./ui/input";
 import { SearchIcon } from "lucide-react";
+import { Button } from "./ui/button";
 
 interface SearchFieldProps {
   className?: string;
@@ -27,7 +28,12 @@ const SearchField = ({ className }: SearchFieldProps) => {
     >
       <div className="relative">
         <Input name="q" placeholder="Search" className="pe-10" />
-        <SearchIcon className="absolute right-3 top-1/2 size-5 -translate-y-1/2 transform text-muted-foreground" />
+        <button
+          type="submit"
+          className="absolute right-3 top-1/2 -translate-y-1/2 transform text-muted-foreground"
+        >
+          <SearchIcon className="size-5" />
+        </button>
       </div>
     </form>
   );
