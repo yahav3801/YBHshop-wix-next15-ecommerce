@@ -1,3 +1,4 @@
+import PaginationBar from "@/components/PaginationBar";
 import Product from "@/components/Products";
 import { Skeleton } from "@/components/ui/skeleton";
 import { delay } from "@/lib/utils";
@@ -9,15 +10,16 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 interface PageProps {
-  params: {
-    slug: string;
-  };
+  params: { slug: string };
+  searchParams: { page?: string };
 }
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
+  const { page } = await searchParams;
   const collection = await getCollectionBySlug(
     await getWixServerClient(),
     slug,
@@ -25,7 +27,7 @@ export async function generateMetadata({
   if (!collection) notFound();
   const banner = collection.media?.mainMedia?.image;
   return {
-    title: collection.name,
+    title: collection.name + " " + page,
     description: collection.description,
     openGraph: {
       images: banner ? [{ url: banner.url }] : [],
@@ -33,8 +35,10 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params, searchParams }: PageProps) {
   const { slug } = await params;
+  const { page } = await searchParams;
+
   const collection = await getCollectionBySlug(
     await getWixServerClient(),
     slug,
@@ -43,8 +47,8 @@ export default async function Page({ params }: PageProps) {
   return (
     <div className="space-y-5">
       <h2 className="text-2xl font-bold">Products</h2>
-      <Suspense fallback={<LoadingSkeleton />}>
-        <Products collectionId={collection._id} />
+      <Suspense fallback={<LoadingSkeleton />} key={page}>
+        <Products page={parseInt(page || "1")} collectionId={collection._id} />
       </Suspense>
     </div>
   );
@@ -52,19 +56,32 @@ export default async function Page({ params }: PageProps) {
 
 interface ProductsProps {
   collectionId: string;
+  page: number;
 }
 
-async function Products({ collectionId }: ProductsProps) {
+async function Products({ collectionId, page }: ProductsProps) {
+  const pageSize = 12;
+
   const collectionProducts = await queryProducts(await getWixServerClient(), {
     collectionIds: collectionId,
+    limit: pageSize,
+    skip: (page - 1) * pageSize,
   });
 
   if (!collectionProducts.length) notFound();
+
+  if (page > (collectionProducts.totalPages || 1)) notFound();
   return (
-    <div className="flex grid-cols-2 flex-col gap-5 sm:grid md:grid-cols-3 lg:grid-cols-4">
-      {collectionProducts.items.map((product) => (
-        <Product key={product._id} product={product}></Product>
-      ))}
+    <div className="space-y-10">
+      <div className="flex grid-cols-2 flex-col gap-5 sm:grid md:grid-cols-3 lg:grid-cols-4">
+        {collectionProducts.items.map((product) => (
+          <Product key={product._id} product={product} />
+        ))}
+      </div>
+      <PaginationBar
+        currentPage={page}
+        totalPages={collectionProducts.totalPages || 1}
+      />
     </div>
   );
 }
