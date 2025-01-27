@@ -3,16 +3,21 @@ import { cache } from "react";
 
 type queryProductsSort = "last_updated" | "price_desc" | "price_asc";
 interface queryProductsFilter {
-  collectionIds: string[] | string;
+  q?: string;
+  collectionIds?: string[] | string;
   sort?: queryProductsSort;
   skip?: number;
   limit?: number;
 }
 export async function queryProducts(
   wixClient: WixClient,
-  { collectionIds, sort = "last_updated", skip, limit }: queryProductsFilter,
+  { collectionIds, sort = "last_updated", skip, limit, q }: queryProductsFilter,
 ) {
   let query = wixClient.products.queryProducts();
+
+  if (q) {
+    query = query.startsWith("name", q);
+  }
 
   const collectionIdsArray = collectionIds
     ? Array.isArray(collectionIds)
