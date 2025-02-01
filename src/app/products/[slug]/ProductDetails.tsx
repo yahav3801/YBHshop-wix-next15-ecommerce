@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/accordion";
 import AddToCartButton from "@/components/AddToCartButton";
 import BackInStockNotificationButuon from "@/components/BackInStockNotificationButton";
+import BuyNowButton from "@/components/BuyNowButton";
 
 interface ProductDetailsProps {
   product: products.Product;
@@ -104,13 +105,21 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
           </div>
         </div>
         {inStock ? (
-          <AddToCartButton
-            className="w-full"
-            disabled={availableQuantityExceeded || quantity < 1}
-            product={product}
-            selectedOptions={selectedOptions}
-            quantity={quantity}
-          />
+          <div className="flex items-center gap-2.5">
+            <AddToCartButton
+              className="w-full"
+              disabled={availableQuantityExceeded || quantity < 1}
+              product={product}
+              selectedOptions={selectedOptions}
+              quantity={quantity}
+            />
+            <BuyNowButton
+              disabled={availableQuantityExceeded || quantity < 1}
+              product={product}
+              quantity={quantity}
+              selectedOptions={selectedOptions}
+            />
+          </div>
         ) : (
           <BackInStockNotificationButuon
             className="w-full"
