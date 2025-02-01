@@ -10,10 +10,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ProductsSort } from "@/wix-api/products";
-
 import { collections } from "@wix/stores";
 import { useRouter, useSearchParams } from "next/navigation";
-
 import React, {
   useEffect,
   useOptimistic,
