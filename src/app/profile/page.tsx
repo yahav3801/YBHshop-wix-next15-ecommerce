@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import React from "react";
 import MemberInfoForm from "./MemberInfoForm";
+import Orders from "./Orders";
 
 export const metadata: Metadata = {
   title: "Profile",
@@ -18,6 +19,7 @@ const Page = async () => {
         Your profile
       </h1>
       <MemberInfoForm member={member} />
+      <Orders />
     </main>
   );
 };
