@@ -1,9 +1,13 @@
-import { getProductBySlug } from "@/wix-api/products";
+import { getProductBySlug, getRelatedProducts } from "@/wix-api/products";
 import { notFound } from "next/navigation";
-import React from "react";
+import React, { Suspense } from "react";
 import ProductDetails from "./ProductDetails";
 import { Metadata } from "next/types";
 import { getWixServerClient } from "@/lib/wix-client.server";
+import { recommendations } from "@wix/ecom";
+import { delay } from "@/lib/utils";
+import Product from "@/components/Products";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface PageProps {
   params: {
@@ -44,6 +48,42 @@ export default async function page({ params }: PageProps) {
   return (
     <main className="mx-auto max-w-7xl space-y-10 px-5 py-10">
       <ProductDetails product={product} />
+      <Suspense fallback={<RelatedProductsLoadingSkeletons />}>
+        <RelatedProducts productId={product._id} />
+      </Suspense>
     </main>
+  );
+}
+
+interface RelatedProductsProps {
+  productId: string;
+}
+async function RelatedProducts({ productId }: RelatedProductsProps) {
+  const relatedProducts = await getRelatedProducts(
+    await getWixServerClient(),
+    productId,
+  );
+
+  if (!relatedProducts.length) return null;
+
+  return (
+    <div className="space-y-5">
+      <h2 className="text-2xl font-bold">Related Products</h2>
+      <div className="flex grid-cols-2 flex-col gap-5 sm:grid lg:grid-cols-4">
+        {relatedProducts.map((product) => (
+          <Product key={product._id} product={product} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RelatedProductsLoadingSkeletons() {
+  return (
+    <div className="flex grid-cols-2 flex-col gap-5 pt-12 sm:grid lg:grid-cols-4">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <Skeleton key={i} className="h-[26rem] w-full" />
+      ))}
+    </div>
   );
 }
