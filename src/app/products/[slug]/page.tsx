@@ -107,7 +107,6 @@ interface ProductReviewsSectionProps {
 async function ProductReviewsSection({ product }: ProductReviewsSectionProps) {
   const wixClient = await getWixServerClient();
   const loggedInMember = await getLoggedInMember(wixClient);
-  await delay(3000);
 
   return (
     <div className="space-y-5">
