@@ -25,6 +25,11 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import LoadingButton from "../LoadingButton";
 import StarRatingInput from "./StarRatingInput";
+import { useRef } from "react";
+import { Button } from "../ui/button";
+import { CircleAlert, ImageUp, Loader2, X } from "lucide-react";
+import useMediaUpload, { MediaAttachment } from "./useMediaUpload";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   title: z
@@ -66,15 +71,34 @@ export default function CreateProductReviewDialog({
 
   const mutation = useCreateProductReview();
 
+  const { attachments, startUpload, removeAttachment, clearAttachments } =
+    useMediaUpload();
   async function onSubmit({ title, body, rating }: FormValues) {
     if (!product._id) throw Error("Product ID is missing");
     mutation.mutate(
-      { productId: product._id, rating, body, title },
       {
-        onSuccess: onSubmitted,
+        productId: product._id,
+        rating,
+        body,
+        title,
+        media: attachments
+          .filter((m) => m.url)
+          .map((m) => ({
+            url: m.url!,
+            type: m.file.type.startsWith("image") ? "image" : "video",
+          })),
+      },
+      {
+        onSuccess: () => {
+          form.reset();
+          clearAttachments();
+          onSubmitted();
+        },
       },
     );
   }
+
+  const uploadInProgress = attachments.some((m) => m.state === "uploading");
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -147,7 +171,33 @@ export default function CreateProductReviewDialog({
                   </FormItem>
                 )}
               />
-              <LoadingButton type="submit" loading={mutation.isPending}>
+              <div className="flex flex-wrap gap-5">
+                {attachments.map((att) => (
+                  <AttachmentPreview
+                    key={att.id}
+                    attachment={att}
+                    onRemoveClick={removeAttachment}
+                  />
+                ))}
+                <AddMediaButton
+                  onFileSelected={startUpload}
+                  disabled={
+                    attachments.filter((a) => a.state !== "failed").length >= 5
+                  }
+                />
+              </div>
+              {attachments.filter((a) => a.state !== "failed").length >= 5 && (
+                <div className="text-m flex items-center gap-2 text-muted-foreground">
+                  <CircleAlert />
+                  <span>You may upload a maximum of 5 attachments.</span>
+                </div>
+              )}
+
+              <LoadingButton
+                disabled={uploadInProgress}
+                type="submit"
+                loading={mutation.isPending}
+              >
                 Submit
               </LoadingButton>
             </form>
@@ -155,5 +205,102 @@ export default function CreateProductReviewDialog({
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+interface AddMediaButtonProps {
+  onFileSelected: (file: File) => void;
+  disabled: boolean;
+}
+function AddMediaButton({ onFileSelected, disabled }: AddMediaButtonProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <>
+      <Button
+        type="button"
+        disabled={disabled}
+        title="Add media"
+        variant="outline"
+        size={"icon"}
+        onClick={() => fileInputRef.current?.click()}
+      >
+        <ImageUp className="scale-125" />
+      </Button>
+      <input
+        type="file"
+        accept="image/*, video/*"
+        ref={fileInputRef}
+        onChange={(e) => {
+          const files = Array.from(e.target.files || []);
+          if (files.length) {
+            onFileSelected(files[0]);
+            e.target.value = "";
+          }
+        }}
+        disabled={disabled}
+        className="sr-only hidden"
+      />
+    </>
+  );
+}
+
+interface attachmentPreviewProps {
+  attachment: MediaAttachment;
+  onRemoveClick: (id: string) => void;
+}
+
+function AttachmentPreview({
+  attachment: { id, file, url, state },
+  onRemoveClick,
+}: attachmentPreviewProps) {
+  return (
+    <div
+      className={cn(
+        "relative size-fit",
+        state === "failed" && "outline outline-1 outline-destructive",
+      )}
+    >
+      {file.type.startsWith("image") ? (
+        <WixImage
+          mediaIdentifier={url}
+          scaleToFill={false}
+          placeholder={URL.createObjectURL(file)}
+          alt="attachment Preview"
+          className={cn(
+            "max-h-24 max-w-24 object-contain",
+            !url && "opacity-50",
+          )}
+        />
+      ) : (
+        <video
+          controls
+          className={cn("max-h-24 max-w-24", !url && "opacity-50")}
+        >
+          <source src={url || URL.createObjectURL(file)} type={file.type} />
+        </video>
+      )}
+      {state === "uploading" && (
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform">
+          <Loader2 className="animate-spin" />
+        </div>
+      )}
+      {state === "failed" && (
+        <div
+          title="failed to upload media"
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform"
+        >
+          <CircleAlert className="text-destructive" />
+        </div>
+      )}
+      <button
+        title="remove media"
+        type="button"
+        onClick={() => onRemoveClick(id)}
+        className="absolute -right-1.5 -top-1.5 border bg-background"
+      >
+        <X size={20} />
+      </button>
+    </div>
   );
 }

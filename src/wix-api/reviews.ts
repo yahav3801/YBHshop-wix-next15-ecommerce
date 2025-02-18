@@ -6,10 +6,11 @@ export interface CreateProductReviewValues {
   rating: number;
   body: string;
   title: string;
+  media: { url: string; type: "image" | "video" }[];
 }
 export async function createProductReview(
   wixClient: WixClient,
-  { productId, rating, body, title }: CreateProductReviewValues,
+  { productId, rating, body, title, media }: CreateProductReviewValues,
 ) {
   const member = await getLoggedInMember(wixClient);
   if (!member) throw Error("Must be logged in to create a review");
@@ -33,6 +34,9 @@ export async function createProductReview(
       title,
       body,
       rating,
+      media: media.map(({ url, type }) =>
+        type === "image" ? { image: url } : { video: url },
+      ),
     },
   });
 }
