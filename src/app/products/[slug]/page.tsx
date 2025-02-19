@@ -14,6 +14,7 @@ import CreateProductReviewButton from "@/components/reviews/CreateProductReviewB
 import ProductReviews, {
   ProductReviewsLoadingSkeletons,
 } from "./ProductReviews";
+import { getProductReviews } from "@/wix-api/reviews";
 
 interface PageProps {
   params: {
@@ -105,14 +106,25 @@ interface ProductReviewsSectionProps {
   product: products.Product;
 }
 async function ProductReviewsSection({ product }: ProductReviewsSectionProps) {
+  if (!product._id) return null;
   const wixClient = await getWixServerClient();
   const loggedInMember = await getLoggedInMember(wixClient);
+
+  const existingReview = loggedInMember?.contactId
+    ? (
+        await getProductReviews(wixClient, {
+          productId: product._id,
+          contactId: loggedInMember.contactId,
+        })
+      ).items[0]
+    : null;
 
   return (
     <div className="space-y-5">
       <CreateProductReviewButton
         product={product}
         loggedInMember={loggedInMember}
+        hasExistingReview={!!existingReview}
       />
       <ProductReviews product={product} />
     </div>

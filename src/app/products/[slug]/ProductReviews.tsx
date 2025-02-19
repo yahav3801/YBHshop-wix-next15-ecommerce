@@ -10,6 +10,9 @@ import { products } from "@wix/stores";
 import { CornerDownRight, StarIcon } from "lucide-react";
 import Image from "next/image";
 import logo from "@/assets/logo.png";
+import Zoom from "react-medium-image-zoom";
+import WixImage from "@/components/WixImage";
+import { media, media as wixMedia } from "@wix/sdk";
 interface ProductReviewsProps {
   product: products.Product;
 }
@@ -97,6 +100,13 @@ function Review({
         {content?.body && (
           <div className="whitespace-pre-wrap">{content.body}</div>
         )}
+        {!!content?.media?.length && (
+          <div className="flex flex-wrap gap-2">
+            {content.media.map((media) => (
+              <MediaAttachment key={media.image || media.video} media={media} />
+            ))}
+          </div>
+        )}
       </div>
       {reply?.message && (
         <div className="ms-10 mt-2.5 space-y-1 border-t pt-2.5">
@@ -129,4 +139,34 @@ export function ProductReviewsLoadingSkeletons() {
       ))}
     </div>
   );
+}
+
+interface MediaAttachmentProps {
+  media: reviews.Media;
+}
+function MediaAttachment({ media }: MediaAttachmentProps) {
+  if (media.image) {
+    return (
+      <Zoom>
+        <WixImage
+          mediaIdentifier={media.image}
+          alt={"Review media"}
+          scaleToFill={false}
+          className="max-h-40 max-w-40 object-contain"
+        />
+      </Zoom>
+    );
+  }
+  if (media.video) {
+    return (
+      <video controls className="max-h-40 max-w-40">
+        <source
+          src={wixMedia.getVideoUrl(media.video).url}
+          type="video/mp4"
+        ></source>
+      </video>
+    );
+  }
+
+  return <span className="text-destructive">Unsupported media type</span>;
 }
