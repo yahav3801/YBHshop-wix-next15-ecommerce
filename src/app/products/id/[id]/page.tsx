@@ -3,12 +3,12 @@ import { getProductById } from "@/wix-api/products";
 import { notFound, redirect } from "next/navigation";
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
   searchParams: any;
 }
 
 export default async function Page({ params, searchParams }: PageProps) {
-  const resolvedParams = params;
+  const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
 
   if (resolvedParams.id === "someId") {
