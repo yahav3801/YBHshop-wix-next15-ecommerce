@@ -7,14 +7,14 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import React, { Suspense } from "react";
 interface PageProps {
-  searchParams: {
+  searchParams: Promise<{
     q?: string;
     page?: string;
     collection?: string[];
     price_min?: string;
     price_max?: string;
     sort?: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({
