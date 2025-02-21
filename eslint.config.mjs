@@ -14,7 +14,7 @@ const eslintConfig = [
     "next/core-web-vitals",
     "next/typescript",
     "prettier",
-    "@plugin:@tanstack/eslint-plugin-query/recommended",
+    "@tanstack/eslint-plugin-query/recommended",
   ),
 ];
 

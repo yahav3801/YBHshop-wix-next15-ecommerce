@@ -15,7 +15,7 @@ interface PageProps {
   searchParams: { orderId: string };
 }
 const Page = async ({ searchParams }: PageProps) => {
-  const { orderId } = await searchParams;
+  const { orderId } = searchParams;
   const wixClient = await getWixServerClient();
   const [order, loggedInMember] = await Promise.all([
     getOrder(wixClient, orderId),
@@ -28,8 +28,7 @@ const Page = async ({ searchParams }: PageProps) => {
     : null;
   return (
     <main className="mx-auto flex max-w-3xl flex-col items-center space-y-5 px-5 py-10">
-      <h1 className="text-3xl font-bold"></h1>
-      We received your order!
+      <h1 className="text-3xl font-bold">We received your order!</h1>
       <p>A summary of your order was sent to your email address.</p>
       <h2 className="text-2xl font-bold">Order Details</h2>
       <Order order={order} />
