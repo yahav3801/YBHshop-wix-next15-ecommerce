@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 interface PageProps {
-  searchParams: { orderId?: string };
+  searchParams: { orderId: string };
 }
 
 export default async function Page({ searchParams }: PageProps) {
