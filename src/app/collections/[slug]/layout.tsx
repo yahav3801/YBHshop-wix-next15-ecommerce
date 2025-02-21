@@ -8,8 +8,9 @@ import { Suspense } from "react";
 
 interface LayoutProps {
   children: React.ReactNode;
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
+
 export default function Layout({ children, params }: LayoutProps) {
   return (
     <Suspense fallback={LoadingSkeleton()}>
@@ -19,7 +20,7 @@ export default function Layout({ children, params }: LayoutProps) {
 }
 
 async function CollectionsLayout({ children, params }: LayoutProps) {
-  const slug = (await params).slug;
+  const { slug } = await params;
 
   const collection = await getCollectionBySlug(
     await getWixServerClient(),
@@ -27,6 +28,7 @@ async function CollectionsLayout({ children, params }: LayoutProps) {
   );
   if (!collection) notFound();
   const banner = collection.media?.mainMedia?.image;
+
   return (
     <main className="mx-auto max-w-7xl space-y-10 px-5 py-10">
       <div className="flex flex-col gap-10">
