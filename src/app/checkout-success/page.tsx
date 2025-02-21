@@ -1,34 +1,31 @@
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
-import Link from "next/link";
 import Order from "@/components/Order";
 import { getWixServerClient } from "@/lib/wix-client.server";
 import { getLoggedInMember } from "@/wix-api/members";
 import { getOrder } from "@/wix-api/orders";
+import { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import ClearCart from "./ClearCart";
+
+interface PageProps {
+  searchParams: { orderId: string };
+}
 
 export const metadata: Metadata = {
   title: "Checkout success",
 };
 
-interface PageProps {
-  searchParams: Record<string, string | string[] | undefined>;
-}
-
-export default async function Page({ searchParams }: PageProps) {
-  const orderId = Array.isArray(searchParams?.orderId)
-    ? searchParams.orderId[0]
-    : searchParams?.orderId;
-
-  if (!orderId) notFound();
-
+export default async function Page({ searchParams: { orderId } }: PageProps) {
   const wixClient = await getWixServerClient();
+
   const [order, loggedInMember] = await Promise.all([
     getOrder(wixClient, orderId),
     getLoggedInMember(wixClient),
   ]);
 
-  if (!order) notFound();
+  if (!order) {
+    notFound();
+  }
 
   const orderCreatedDate = order._createdDate
     ? new Date(order._createdDate)
