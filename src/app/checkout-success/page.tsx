@@ -12,13 +12,13 @@ export const metadata: Metadata = {
   title: "Checkout Success",
 };
 interface PageProps {
-  searchParams: { orderId: string };
+  searchParams: { orderId?: string };
 }
 const Page = async ({ searchParams }: PageProps) => {
   const { orderId } = searchParams;
   const wixClient = await getWixServerClient();
   const [order, loggedInMember] = await Promise.all([
-    getOrder(wixClient, orderId),
+    getOrder(wixClient, orderId || ""),
     getLoggedInMember(wixClient),
   ]);
   if (!order) notFound();
