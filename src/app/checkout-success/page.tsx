@@ -16,7 +16,7 @@ interface PageProps {
 }
 
 export default async function Page({ searchParams }: PageProps) {
-  const orderId = searchParams?.orderId;
+  const orderId = searchParams?.orderId ?? "";
   if (!orderId) notFound();
 
   const wixClient = await getWixServerClient();
