@@ -7,25 +7,25 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ClearCart from "./ClearCart";
 
-interface PageProps {
-  searchParams: { orderId: string };
-}
-
 export const metadata: Metadata = {
   title: "Checkout success",
 };
 
-export default async function Page({ searchParams: { orderId } }: PageProps) {
-  const wixClient = await getWixServerClient();
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: { orderId?: string }; // Make orderId optional
+}) {
+  const { orderId } = searchParams;
+  if (!orderId) notFound();
 
+  const wixClient = await getWixServerClient();
   const [order, loggedInMember] = await Promise.all([
     getOrder(wixClient, orderId),
     getLoggedInMember(wixClient),
   ]);
 
-  if (!order) {
-    notFound();
-  }
+  if (!order) notFound();
 
   const orderCreatedDate = order._createdDate
     ? new Date(order._createdDate)
