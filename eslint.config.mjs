@@ -1,6 +1,7 @@
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
+import { tanstackQueryESLintRule } from "@tanstack/eslint-plugin-query";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -10,12 +11,16 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends(
-    "next/core-web-vitals",
-    "next/typescript",
-    "prettier",
-    "@tanstack/eslint-plugin-query/recommended",
-  ),
+  ...compat.extends("next/core-web-vitals", "next/typescript", "prettier"),
+  {
+    plugins: {
+      "@tanstack/query": tanstackQueryESLintRule,
+    },
+    rules: {
+      "@tanstack/query/exhaustive-deps": "error",
+      "@tanstack/query/prefer-query-object": "error",
+    },
+  },
 ];
 
 export default eslintConfig;
