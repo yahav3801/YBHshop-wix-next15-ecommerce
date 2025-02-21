@@ -12,7 +12,7 @@ import Image from "next/image";
 import logo from "@/assets/logo.png";
 import Zoom from "react-medium-image-zoom";
 import WixImage from "@/components/WixImage";
-import { media, media as wixMedia } from "@wix/sdk";
+import { media as wixMedia } from "@wix/sdk";
 interface ProductReviewsProps {
   product: products.Product;
 }

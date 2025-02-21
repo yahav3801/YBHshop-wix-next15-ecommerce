@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
 import CheckoutButton from "@/components/CheckoutButton";
 import { Button } from "@/components/ui/button";

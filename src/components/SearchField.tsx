@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Input } from "./ui/input";
 import { SearchIcon, X } from "lucide-react";
-import { Button } from "./ui/button";
 
 interface SearchFieldProps {
   className?: string;

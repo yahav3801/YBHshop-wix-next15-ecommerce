@@ -8,7 +8,6 @@ import Product from "@/components/Products";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCollectionBySlug } from "@/wix-api/collections";
 import { queryProducts } from "@/wix-api/products";
-import { getWixClient } from "@/lib/wix-client.base";
 import { getWixServerClient } from "@/lib/wix-client.server";
 export default function Home() {
   return (

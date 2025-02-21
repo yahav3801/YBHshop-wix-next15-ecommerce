@@ -8,7 +8,7 @@ interface PageProps {
 }
 
 export default async function Page({ params, searchParams }: PageProps) {
-  const resolvedParams = await params;
+  const resolvedParams = params;
   const resolvedSearchParams = await searchParams;
 
   if (resolvedParams.id === "someId") {

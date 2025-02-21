@@ -17,8 +17,11 @@ const eslintConfig = [
       "@tanstack/query": eslintPluginQuery,
     },
     rules: {
+      "@typescript-eslint/no-unused-vars": ["warn"],
+      "@typescript-eslint/no-explicit-any": "off",
       "@tanstack/query/exhaustive-deps": "error",
       "@tanstack/query/prefer-query-object": "off",
+      "@typescript-eslint/no-unused-vars": ["warn"],
     },
   },
 ];

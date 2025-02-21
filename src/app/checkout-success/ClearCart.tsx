@@ -1,6 +1,6 @@
 "use client";
 import { useClearCart } from "@/hooks/cart";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 const ClearCart = () => {
   const { mutate } = useClearCart();
