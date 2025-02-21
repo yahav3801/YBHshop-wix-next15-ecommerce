@@ -1,6 +1,6 @@
 import { WIX_STORES_APP_ID } from "@/lib/constants";
 import { findVariant } from "@/lib/utils";
-import { getWixClient, WixClient } from "@/lib/wix-client.base";
+import { WixClient } from "@/lib/wix-client.base";
 import { products } from "@wix/stores";
 
 export async function getCart(wixClient: WixClient) {

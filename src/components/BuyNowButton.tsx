@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, ButtonProps } from "./ui/button";
+import { ButtonProps } from "./ui/button";
 import { products } from "@wix/stores";
 import { useQuickCheckout } from "@/hooks/checkout";
 import LoadingButton from "./LoadingButton";

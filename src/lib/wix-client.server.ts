@@ -11,7 +11,9 @@ export async function getWixServerClient() {
     tokens = JSON.parse(
       (await cookies()).get(WIX_SESSION_COOKIE)?.value || "{}",
     );
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
   return getWixClient(tokens);
 }
 

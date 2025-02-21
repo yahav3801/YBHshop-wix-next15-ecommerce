@@ -4,7 +4,6 @@ import { findVariant } from "@/lib/utils";
 import { WixClient } from "@/lib/wix-client.base";
 import { checkout } from "@wix/ecom";
 import { products } from "@wix/stores";
-import { redirect } from "next/dist/server/api-utils";
 
 export async function getCheckoutUrlForCurrentCart(wixClient: WixClient) {
   const { checkoutId } =
