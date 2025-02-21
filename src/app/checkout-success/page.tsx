@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { orderId?: string }; // Make orderId optional
+  searchParams: { orderId: string };
 }) {
   const { orderId } = searchParams;
   if (!orderId) notFound();
