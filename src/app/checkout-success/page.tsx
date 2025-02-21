@@ -7,6 +7,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ClearCart from "./ClearCart";
 
+// @ts-ignore
 interface PageProps {
   searchParams: { orderId: string };
 }
