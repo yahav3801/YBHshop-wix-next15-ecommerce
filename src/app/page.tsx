@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getCollectionBySlug } from "@/wix-api/collections";
 import { queryProducts } from "@/wix-api/products";
 import { getWixServerClient } from "@/lib/wix-client.server";
+export const dynamic = "force-dynamic";
 export default function Home() {
   return (
     <main className="mx-auto max-w-7xl space-y-10 px-5 py-10">

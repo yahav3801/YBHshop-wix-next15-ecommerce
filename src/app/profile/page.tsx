@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import React from "react";
 import MemberInfoForm from "./MemberInfoForm";
 import Orders from "./Orders";
-
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Profile",
   description: "Profile page",

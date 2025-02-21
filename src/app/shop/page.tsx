@@ -6,6 +6,7 @@ import { queryProducts, ProductsSort } from "@/wix-api/products";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import React, { Suspense } from "react";
+export const dynamic = "force-dynamic";
 interface PageProps {
   searchParams: Promise<{
     q?: string;
@@ -95,7 +96,12 @@ async function ProductResults({
           <Product key={product._id} product={product} />
         ))}
       </div>
-      <PaginationBar currentPage={page} totalPages={products.totalPages || 1} />
+      <Suspense fallback={<div>Loading pagination...</div>}>
+        <PaginationBar
+          currentPage={page}
+          totalPages={products.totalPages || 1}
+        />
+      </Suspense>
     </div>
   );
 }
