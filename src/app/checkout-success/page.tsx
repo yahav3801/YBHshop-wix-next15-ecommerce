@@ -1,22 +1,22 @@
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import Link from "next/link";
 import Order from "@/components/Order";
 import { getWixServerClient } from "@/lib/wix-client.server";
 import { getLoggedInMember } from "@/wix-api/members";
 import { getOrder } from "@/wix-api/orders";
-import { Metadata } from "next";
-import Link from "next/link";
-import { notFound } from "next/navigation";
 import ClearCart from "./ClearCart";
 
 export const metadata: Metadata = {
   title: "Checkout success",
 };
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: { orderId: string };
-}) {
-  const { orderId } = searchParams;
+interface PageProps {
+  searchParams: { orderId?: string };
+}
+
+export default async function Page({ searchParams }: PageProps) {
+  const orderId = searchParams?.orderId;
   if (!orderId) notFound();
 
   const wixClient = await getWixServerClient();
