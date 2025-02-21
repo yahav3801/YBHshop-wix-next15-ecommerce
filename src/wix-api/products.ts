@@ -25,9 +25,15 @@ export async function queryProducts(
   }: queryProductsFilter,
 ) {
   let query = wixClient.products.queryProducts();
-
   if (q) {
-    query = query.startsWith("name", q);
+    const allResults = await query.find();
+    const searchTerms = q.toLowerCase().split(" ");
+    const matchingIds = allResults.items
+      .filter((item: any) =>
+        searchTerms.some((term) => item.name.toLowerCase().includes(term)),
+      )
+      .map((item) => item._id);
+    query = wixClient.products.queryProducts().in("_id", matchingIds);
   }
 
   const collectionIdsArray = collectionIds

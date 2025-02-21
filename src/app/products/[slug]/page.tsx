@@ -4,8 +4,7 @@ import React, { Suspense } from "react";
 import ProductDetails from "./ProductDetails";
 import { Metadata } from "next/types";
 import { getWixServerClient } from "@/lib/wix-client.server";
-import { recommendations } from "@wix/ecom";
-import { delay } from "@/lib/utils";
+
 import Product from "@/components/Products";
 import { Skeleton } from "@/components/ui/skeleton";
 import { products } from "@wix/stores";
