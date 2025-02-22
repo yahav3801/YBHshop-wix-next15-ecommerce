@@ -16,11 +16,12 @@ export default function Home() {
       <div className="flex items-center bg-secondary md:h-96">
         <div className="space-y-7 p-10 text-center md:w-1/2">
           <h1 className="text-3xl font-bold md:text-4xl">
-            Fill the void in your heart
+            Welcome to the YBH DEMO SHOP
           </h1>
           <p>
-            Tough day? Credit card maxed out? Buy some expensive stuff and
-            become happy again!
+            This is a FAKE DEMO SHOP, you can make purchases for free the
+            products, prices and checkouts are NOT real. we are NOT selling
+            anything real here.
           </p>
           <Button asChild>
             <Link href={"/shop"}>
